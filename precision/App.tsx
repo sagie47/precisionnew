@@ -225,25 +225,22 @@ const App: React.FC = () => {
     setFormState('submitting');
     
     try {
-      const response = await fetch("https://formsubmit.co/ajax/sanjadsamin2001@gmail.com", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Accept": "application/json",
+          "Content-Type": "application/json",
         },
-        body: new URLSearchParams({
+        body: JSON.stringify({
           name: formData.name,
           phone: formData.phone,
           service: formData.service,
           message: formData.message,
-          _captcha: "false",
-          _subject: "New Service Request from Website"
-        }).toString(),
+        }),
       });
 
       const result = await response.json();
       
-      if (response.ok && (result.success === "true" || result.success === true)) {
+      if (response.ok && result.success) {
         setFormState('success');
         setFormData({ name: '', phone: '', service: 'Plumbing Repair', message: '' });
       } else {
